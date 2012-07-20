@@ -1,0 +1,94 @@
+<% USE DUMPER %> <% DUMPER.dump_html(cenvat ) %>
+<p style="text-align:left;">
+To,<br>
+DCW Ltd<br>
+Sahupuram P.O.628 229,Arumudaneri<br>
+Thoothukudi<br>
+Tamil Nadu<br>
+India<br>
+</p>
+<p style="text-align:left" >
+<div style="text-align:center" >
+<% address %><br>
+Details showing Excess/Shortage Realisation in respect of sales of PVC resin in the month of <% month %> <% year.substr(0,4) %>..
+</div>
+<table cellpadding=3 border=1 class="report_big">
+	<thead>
+		<tr>
+			<th>Inv No</th>
+			<th>Date</th>
+			<th>Customer Name</th>
+			<th>Invoice Amt</th>
+			<th>Freight</th>
+			<th>Godown Maint.</th>
+			<th>Comm.</th>
+			<th>Sales Tax</th>
+			<th>Discount</th>
+			<th>Net Amt</th>
+			<th>Inv No</th>
+			<th>Date</th>
+			<th>LR No</th>
+			<th>Qty (Mts)</th>
+			<th>Basic</th>
+			<th>Excise</th>
+			<th>Ins.</th>
+			<th>Discount</th>
+			<th>Total</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% FOREACH invoice IN array.sort('invoice_no') %>
+			<tr>
+				<td><% invoice.invoice_no %> </td>
+				<td><% invoice.invoice_date %></td>
+				<td><% invoice.customer_name %> </td>
+				<td><% invoice.invoice_amount  %></td>
+				<td><% invoice.freight %></td>
+				<td><% invoice.godown_charges %></td>
+				<td><% invoice.commission %></td>
+				<td><% invoice.sale_tax %></td>
+				<td><% invoice.discount %></td>
+				<td><% invoice.net_amount %></td>
+				<td><% invoice.bill_no %></td>
+				<td><% invoice.bill_date %></td>
+				<td><% invoice.lr_no %></td>
+				<td><% invoice.sale_quantity %></td>
+				<td><% invoice.basic_price %> </td>
+				<td><% invoice.excise %></td>
+				<td><% invoice.insurance %></td>
+				<td><% invoice.discount %></td>
+				<td><% invoice.net_amount_2  %></td>
+			</tr>
+		<% END %>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan=19></td>
+		</tr>
+		<tr>
+			<td align="center" colspan="3" >Total</td>
+			<td><% total_invoice_amount %></td>
+			<td><% total_freight %></td>
+			<td><% total_godown_charge %></td>
+			<td><% total_commission %></td>
+			<td><% total_sales_tax %></td>
+			<td><% total_discount %></td>
+			<td><% total_net_amount %></td>
+			<td colspan=3></td>
+			<td><% total_sale_quantity %></td>
+			<td><% total_baisc_price %></td>
+			<td><% total_excise %></td>
+			<td><% total_insurance %></td>
+			<td><% total_discount %></td>
+			<td><% total_net_amount_2 %></td>
+		</tr>
+	</tfoot>
+</table>
+
+</p>
+<p style="text-align:right">
+For M.K. Industries<br><br><br><br><br>
+
+
+Partner/Authorized Signatory
+</p>

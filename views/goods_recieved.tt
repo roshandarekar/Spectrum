@@ -1,0 +1,42 @@
+<b> Goods Received Statement For Month of <% month %> <% year.substr(0,4) %> M.K.Industries (<% branch %>) </b>
+
+<table cellpadding=3 border=1 class="report">
+	<thead>
+		<tr>
+			<th>Sr. No.</th>
+			<th>Issue Date</th>
+			<th>Invoice No</th>
+			<th>LR No</th>
+			<th>Received Date</th>
+			<th>Quantity</th>
+			<th>Carrier</th>
+		<tr>
+	</thead>
+	<tbody>
+		<% count = 0 %>
+		<% FOREACH invoice IN invoices %>
+			<% count = count + 1 %>
+			<tr>
+				<td><% count %></td>
+				<td><% invoice.billdate %></td>
+				<td><% invoice.billno %></td>
+				<td><% invoice.lr_no %></td>
+				<td><% invoice.received_date %></td>
+				<td><% invoice.quantity %></td>
+				<td><% invoice.transportername %></td>
+			</tr>
+		<% END %>
+		<tr>
+			<td colspan=7></td>
+		</tr>
+		<tr>
+			<td align="left" colspan="5" >Total</td>
+			<td align="left" colspan="2"><% totalquantity %>
+		</tr>
+	</tbody>
+</table>
+<br>
+<p style="text-align:right">
+For M.K. Industries<br><br><br><br><br><br>
+Partner/Authorized Signatory
+</p>

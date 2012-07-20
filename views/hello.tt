@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>[% title %]</title>
+		<link rel="stylesheet" type="text/css" href="/static/css/ui-lightness/jquery-ui-1.8.2.custom.css" media="print,screen" />
+		<link rel="stylesheet" type="text/css" href="/static/css/1_reset.css" media="print,screen" />
+		<link rel="stylesheet" type="text/css" href="/static/css/2_text.css" media="print,screen" />
+		<link rel="stylesheet" type="text/css" href="/static/css/3_960.css" media="print,screen" />
+		<link rel="stylesheet" type="text/css" href="/static/css/4_layout.css" media="print,screen" />
+		<link rel="stylesheet" type="text/css" href="/static/css/listnav.css" media="print,screen" />
+		<link rel="stylesheet" type="text/css" href="/static/css/loader.css" media="print,screen" />
+		<link rel="stylesheet" type="text/css" href="/static/css/nav.css" media="print,screen" />
+				<link rel="stylesheet" type="text/css" href="/static/css/ui-lightness/jquery-ui-1.8.2.custom.css" media="print,screen" />
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+	</head>
+	<script language="javascript">
+		$("input[name$=date], input.datepicker").datepicker({
+			showOn : "button",
+			buttonImage : "/static/img/button-calendar.gif",
+			buttonImageOnly : true,
+			dateFormat:'yy-mm-dd'
+		});
+	</script>
+	<body>
+		<h2>
+			<label id="toggle-forms" href="#">DCW Reports</label>
+		</h2>
+		<form id="form" style="float:left" class="search" method="post" action="dcw" >
+			<fieldset  style="width:500px" >
+				<legend>DCW Reports</legend><% tt%>
+				<div style="width:200px" >
+					<p>
+						<label>From Date: </label>
+						<input type="text" class="datepicker calc" name="from_date" value=""/>
+					</p>
+					<p>
+						<label>To Date: </label>
+						<input type="text" class="datepicker calc" name="to_date" value=""/>
+					</p>
+				</div>
+				<div style="width:200px" >
+					<p>
+						<label>Select Report</label>
+						<select name="report_type">
+							<option value="sale_note"> Sale Note </option>
+							<option value="goods_received"> Goods Recieved </option>
+							<option value="commission"> Commission </option>
+							<option value="godown_charges"> Godown Charges </option>
+							<option value="freight"> Freight </option>
+							<option value="discount"> Discount </option>
+							<option value="excess_shortage"> Excess Shortage </option>
+							<option value="tax"> Tax </option>
+							<option value="stock"> Stock </option>
+						</select>
+					</p>
+					<p>
+						<label>Warehouse Name</label>
+						<select name="warehouse_id" class="required"  >
+							<option value="100001">Mumbai</option>
+							<option value="200001">Jalgoan</option>
+							<option value="300001">Ahemdabad</option>
+							<option value="400001">Banglore</option>
+							<option value="500001">Daman</option>
+						</select>
+					</p>
+				</div>
+				<div class="" >
+					<input type="submit" name="Submit" value="Submit">
+				</div>
+			</fieldset>
+		</form>
+
+		<% FOREACH x IN [1,2,3,4] %>
+
+		<% x %>
+
+		<% END %>
+
+	</body>
+</html>

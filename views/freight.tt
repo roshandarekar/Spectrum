@@ -1,0 +1,26 @@
+<div style="text-align:right;"><% end_date %></div>
+
+<p style="text-align:left;">
+To,<br>
+DCW Ltd<br>
+Sahupuram P.O.628 229,Arumudaneri<br>
+Thoothukudi<br>
+Tamil Nadu<br>
+India<br>
+</p>
+<p style="text-align:left" >
+
+Dear Sir,
+<br>
+<br>
+We hereby certify that we have retained a sum of Rs. <% freight %>/- (Rupees <% freight_words %> only) being the freight charges on sale of PVC Resin supplied by you to us for consignment sale basis at M. K. Industries (<% branch %>) for the month of <% month %> <% year.substr(0,4) %>.
+<br>
+<br>
+
+</p>
+<p style="text-align:right">
+For M.K. Industries<br><br><br><br><br>
+
+
+Partner/Authorized Signatory
+</p>

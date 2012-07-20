@@ -1,0 +1,84 @@
+<div style="text-align:right;"><% month %>/<% year %>/M.K. Industries( <% branch %> )</div>
+<div style="text-align:right;"><% end_date %></div>
+
+<p style="text-align:left;">
+To,<br>
+DCW Ltd<br>
+Sahupuram P.O.628 229,Arumudaneri<br>
+Thoothukudi<br>
+Tamil Nadu<br>
+India<br>
+</p>
+
+<table cellpadding=5 border=1 class="report">
+	<tbody>
+		<tr>
+			<td colspan=7>
+				<p style="text-align:left" >
+					Please debit our account of Rs. <% final_amount %> against goods received though
+					<% utransporter = transporters.unique %>
+					<% FOREACH transporter = utransporter %>
+						<% transporter %>
+					<% END %>
+					. vide their LR No. <% FOREACH lr_no IN lr_array %> <% lr_no %>, <% END %> dated <% start_date %> to <% end_date %> as per our sale_note under :
+			</td>
+		</tr>
+		<tr>
+			<td colspan=3 align='center'>DR</td>
+			<td colspan=4 align='center'>CR</td>
+		</tr>
+		<tr>
+			<td class="notes" >&nbsp;</td>
+			<td class="notes" >Amount (Rs.)</td>
+			<td class="notes" >Date</td>
+			<td class="notes" >Bill No</td>
+			<td class="notes" >Quantity</td>
+			<td class="notes" >Rate</td>
+			<td class="notes" >Amount (Rs.)</td>
+		</tr>
+		<tr>
+			<td class="notes" >Freight Charges</td>
+			<td class="notes" align=right ><% freight %></td>
+			<td class="notes"  rowspan=4><% start_date %><BR> to<BR> <% end_date %></td>
+			<td class="notes"  rowspan=4><% invoice_no.first %> <br>to<br><% invoice_no.last %> </td>
+			<td class="notes"  rowspan=4 align=right><% quantity %>&nbsp;</td>
+			<td class="notes"  rowspan=4 >&nbsp;</td>
+			<td class="notes"  rowspan=4 align=right><% amount %></td>
+		</tr>
+		<tr>
+			<td class="notes" >Godown Maintenance Charges</td>
+			<td class="notes"  align=right ><% godown_charge %></td>
+		</tr>
+		<tr>
+			<td class="notes" >Commission </td>
+			<td class="notes"  align=right ><% commission %></td>
+		</tr>
+		<tr>
+			<td class="notes" >Sales Tax</td>
+			<td class="notes"  align=right ><% tax %></td>
+		</tr>
+		<tr>
+			<td class="notes" >Discount</td>
+			<td class="notes"  align=right ><% discount %></td>
+			<td class="notes"  colspan=3>&nbsp;</td>
+			<td class="notes" >Less :</td>
+			<td class="notes"  align=right ><% expense %></td>
+		</tr>
+		<tr>
+			<td class="notes" >Total</td>
+			<td class="notes"  align=right ><% expense %></td>
+			<td class="notes"  colspan=4>Total</td>
+			<td class="notes"  align=right ><% final_amount %></td>
+		</tr>
+		<tr>
+			<td class="notes"  colspan=2>
+				V.A.T TIN No. <% vat_no %> Dt. <% vat_date %><br>
+				C.S.T TIN No. <% cst_no %> Dt. <% cst_date %>
+			</td>
+			<td class="notes"  colspan=5 align=right>
+				For M.K. Industries<br><br><br><br><br>
+				Partner/Authorized Signatory
+			</td>
+		</tr>
+	</tbody>
+</table>

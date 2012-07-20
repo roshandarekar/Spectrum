@@ -1,0 +1,49 @@
+<div style="text-align:right;"><% end_date %></div>
+
+<p style="text-align:left;">
+To,<br>
+DCW Ltd<br>
+Sahupuram P.O.628 229,Arumudaneri<br>
+Thoothukudi<br>
+Tamil Nadu<br>
+India<br>
+</p>
+<p style="text-align:left" >
+
+Dear Sir,
+<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp Stock Status (In M.T.) for the month of <% month %> <% year.substr(0,4) %> from our M.K.Industries (<% branch %>) warehouse.
+
+</p>
+
+<table cellpadding=5 border=1 class="report">
+	<thead>
+		<tr>
+			<th>Basic Price</th>
+			<th>Opening Stock</th>
+			<th>Sale Quantity</th>
+			<th>Purchase Quantity</th>
+			<th>Closing Stock</th>
+		<tr>
+	</thead>
+	<tbody>
+		<% FOREACH row IN array %>
+			<tr>
+				<td><% row.basic_price %></td>
+				<td></td>
+				<td><% row.sale_quantity %></td>
+				<td><% row.purchase_quantity %></td>
+				<td></td>
+			</tr>
+		<% END %>
+		<tr>
+	</tbody>
+	<tfoot>
+		<td>Total</td>
+		<td></td>
+		<td><% total_sale_quantity %></td>
+		<td><% total_purcahse_quantity %></td>
+		<td></td>
+	</tfoot>
+</table>
+<br>

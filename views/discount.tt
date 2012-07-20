@@ -1,0 +1,76 @@
+<div style="text-align:right;"><% end_date %></div>
+
+<p style="text-align:left;">
+To,<br>
+DCW Ltd<br>
+Sahupuram P.O.628 229,Arumudaneri<br>
+Thoothukudi<br>
+Tamil Nadu<br>
+India<br>
+</p>
+<p style="text-align:left" >
+
+Dear Sir,
+<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbspGiven below is the details of the discount to be passed to our customers during the month of <% month %> <% year.substr(0,4) %> from our M.K.Industries (<% branch %>) warehouse.
+
+</p>
+
+<table cellpadding=5 border=1 class="report">
+
+	<thead>
+	<tr>
+		<th>Sr No</th>
+		<th>Customer Name</th>
+		<th>Bill No.</th>
+		<th>Date</th>
+		<th>Quantity</th>
+		<th>Discount (in Rs.)</th>
+	</tr>
+
+	</thead>
+	<tbody>
+		<% count = 1 %>
+		<% FOREACH discount IN discountarray %>
+		<tr>
+			<td>
+				<% count %>
+			</td>
+			<td>
+				<% discount.buyer %>
+			</td>
+			<td>
+				<% discount.billno %>
+			</td>
+			<td>
+				<% discount.billdate %>
+			</td>
+			<td>
+				<% discount.quantity %>
+			</td>
+			<td>
+				<% discount.discount %>
+			</td>
+		</tr>
+		<% count = count + 1 %>
+		<% END %>
+		<tr>
+			<td colspan=6></td>
+		</tr>
+		<tr>
+			<td align="center" colspan="4" >
+				Total
+			</td>
+			<td>
+				<% totalquantity %>
+			</td>
+			<td>
+				<% totaldiscount %>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p style="text-align:right">
+	For M.K. Industries<br><br><br><br><br>
+	Partner/Authorized Signatory
+</p>
