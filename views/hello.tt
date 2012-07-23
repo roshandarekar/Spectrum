@@ -72,11 +72,6 @@
 			</fieldset>
 		</form>
 
-		<% FOREACH x IN [1,2,3,4] %>
-
-		<% x %>
-
-		<% END %>
-
 	</body>
+
 </html>

@@ -5,96 +5,16 @@ our $VERSION = '0.1';
 use Dancer::Plugin::DBIC qw/schema/;
 use DateTime::Format::DateManip;
 use Data::Dumper qw/Dumper/;
-
 use Spell;
-
-my %store = (
-	'100001'	=>	'Mumbai' ,
-	'200001'	=>	'Jalgaon',
-	'300001'	=>	'Ahmedabad',
-	'400001'	=>	'Banglore',
-	'500001'	=>	'Daman'
-);
-
-my %branch = (
-	'100001'	=>	'MUM' ,
-	'200001'	=>	'MUM',
-	'300001'	=>	'AHD',
-	'400001'	=>	'BNG',
-	'500001'	=>	'DMN'
-);
-
-my %vat_no = (
-	'100001'	=>	'27480022091V' ,
-	'200001'	=>	'27480022091V',
-	'300001'	=>	'24074501781V',
-	'400001'	=>	'29310762698',
-	'500001'	=>	'2500000243'
-);
-
-my %cst_no = (
-	'100001'	=>	'27480022091C' ,
-	'200001'	=>	'27480022091C',
-	'300001'	=>	'24574501781C',
-	'400001'	=>	'29310762698',
-	'500001'	=>	'DA/(CST)1753'
-);
-
-my %vat_date = (
-	'100001'	=>	'01/04/2006' ,
-	'200001'	=>	'01/04/2006',
-	'300001'	=>	'19/09/2005',
-	'400001'	=>	'',
-	'500001'	=>	'01/04/2005'
-);
-
-my %cst_date = (
-	'100001'	=>	'01/04/2006' ,
-	'200001'	=>	'01/04/2006',
-	'300001'	=>	'19/09/2005',
-	'400001'	=>	'',
-	'500001'	=>	''
-);
-
-my %findmonth = (
-	'1'	=>	'April',
-	'2'	=>	'May',
-	'3'	=>	'June',
-	'4'	=>	'July',
-	'5'	=>	'Aug',
-	'6'	=>	'Sep',
-	'7'	=>	'Oct',
-	'8'	=>	'Nov',
-	'9'	=>	'Dec',
-	'10'=>	'Jan',
-	'11'=>	'Feb',
-	'12'=>	'March',
-);
-
-my %freight_warehouse = (
-	'100001'	=>	'2300' ,
-	'200001'	=>	'2300',
-	'300001'	=>	'2550',
-	'400001'	=>	'1150',
-	'500001'	=>	'2400'
-);
-
-my %address = (
-	'100001'	=>	'M.K. Industries (Mumbai) <br> Gala No.13, Krishna Compound, <br> Near V. Trans, Bhiwandi <br> Dist. Thane <br> Maharashtra .' ,
-	'200001'	=>	'M.K. Industries (Jalgaon) <br> Gala No.116, Ajanta Raod, <br> Gat No.172/2, Kusumba, <br> Jalgaon <br> Maharashtra 425 003. <br> India ',
-	'300001'	=>	'M.K. Industries (Ahmedabad) <br> Survey No.166 <br> Near Kalikund Naka - <br> Ahmedabad <br> Gujarat 380009 <br> India ',
-	'400001'	=>	'M.K. Industries (Bangalore) Mbr> No.6, Ground Floor, Puttappa Indl. Estate <br> Deepanjali Nagar Mysore Road <br> Bangalore <br> . 560026. <br> India ',
-	'500001'	=>	'M.K. Industries (Daman) <br> Gala No.4, <br> Mangal Smruti, 8 , Varkund Gam, <br> Daman <br> UT 396210. <br> India ' ,
-);
 
 get '/' => sub {
 	template "hello.tt", { tt => 'default'};
 };
 
-
 post '/dcw' => sub {
 	
 	schema->storage->debug(1);
+	schema->storage->dbh->{readonly};
 
 	#FROM AND TO DATE
 	my $from_date = DateTime::Format::DateManip->parse_datetime(param ('from_date'));
@@ -131,7 +51,7 @@ post '/dcw' => sub {
 					->search(
 						{
 							documentno	=> { -in => $sale_invoices } ,
-							branchcode	 => $branch{param 'warehouse_id'} ,
+							branchcode	 => config->{info}->{branch}->{param 'warehouse_id'} ,
 						},
 						{ result_class	=> 'DBIx::Class::ResultClass::HashRefInflator',}
 					);
@@ -141,7 +61,7 @@ post '/dcw' => sub {
 					->search(
 						{
 							documentno	=> { -in => $purchase_invoices } ,
-							branchcode	 => $branch{param 'warehouse_id'} ,
+							branchcode	 => config->{info}->{branch}->{param 'warehouse_id'} ,
 						},
 						{ result_class	=> 'DBIx::Class::ResultClass::HashRefInflator',}
 					);
@@ -232,7 +152,7 @@ post '/dcw' => sub {
 		}
 		my $check_godown_charge = ($total_quantity * 125);
 		my $check_commission	  =	($total_quantity * 225);
-		my $check_freight = ($total_quantity * $freight_warehouse{param 'warehouse_id'} );
+		my $check_freight = ($total_quantity * config->{info}->{freight_warehouse}->{param 'warehouse_id'} );
 
 		my $total_expense = ($total_freight + $total_godown_charge + $total_commission + $total_sales_tax	 + $total_discount);
 		my $final_amount  = ($total_invoice_amount - $total_expense);
@@ -252,13 +172,13 @@ post '/dcw' => sub {
 				quantity		=> $total_quantity ,
 				lr_array		=> $lr_array,
 				invoice_no		=> $invoice_no ,
-				branch			=> $store{param 'warehouse_id'} ,
+				branch			=> config->{info}->{store}->{param 'warehouse_id'} ,
 				year			=> $year ,
 				month			=> $month ,
-				vat_no			=> $vat_no{param 'warehouse_id'} ,
-				cst_no			=> $cst_no{param 'warehouse_id'} ,
-				vat_date		=> $vat_date{param 'warehouse_id'} ,
-				cst_date		=> $cst_date{param 'warehouse_id'} ,
+				vat_no			=> config->{info}->{vat_no}->{param 'warehouse_id'} ,
+				cst_no			=> config->{info}->{cst_no}->{param 'warehouse_id'} ,
+				vat_date		=> config->{info}->{vat_date}->{param 'warehouse_id'} ,
+				cst_date		=> config->{info}->{cst_date}->{param 'warehouse_id'} ,
 			};
 
 	}
@@ -278,7 +198,7 @@ post '/dcw' => sub {
 		my $rs = schema->resultset("FaItemBillStock")
 				->search({
 							documenttype => 'PUR' ,
-							branchcode	 => $branch{param 'warehouse_id'} ,
+							branchcode	 => config->{info}->{branch}->{param 'warehouse_id'} ,
 							documentdate => { '<=' => $to_date_time , '>=' => $new_date_time},
 							itemcode => { '-IN'  => [qw/3001 3060/] }
 					} ) ;
@@ -293,7 +213,7 @@ post '/dcw' => sub {
 #						af_rec_dt => { '<=' => $to_date_time , '>=' => $from_date_time} ,
 						accountcode	=> { '-IN'  => [qw/600001/] } ,
 						documentno	=> { -in => $doc_no } ,
-						branchcode	 => $branch{param 'warehouse_id'} ,
+						branchcode	 => config->{info}->{branch}->{param 'warehouse_id'} ,
 					},
 					{ result_class	=> 'DBIx::Class::ResultClass::HashRefInflator',}
 				);
@@ -338,9 +258,9 @@ post '/dcw' => sub {
 			{
 				invoices		=> $purchase_array ,
 				totalquantity	=> $total_quantity ,
-				branch			=> $store{param 'warehouse_id'} ,
+				branch			=> config->{info}->{store}->{param 'warehouse_id'} ,
 				year			=> $year ,
-				month			=> $findmonth{$month},
+				month			=> config->{info}->{findmonth}->{$month},
 			};
 
 	}
@@ -385,7 +305,7 @@ post '/dcw' => sub {
 				end_date	=> $end_date,
 				month		=> $month,
 				year		=> $year,
-				branch		=> $store{param 'warehouse_id'},
+				branch		=> config->{info}->{store}->{param 'warehouse_id'},
 			};
 
 	}
@@ -430,7 +350,7 @@ post '/dcw' => sub {
 				end_date				=> $end_date,
 				month					=> $month,
 				year					=> $year,
-				branch					=> $store{param 'warehouse_id'},
+				branch					=> config->{info}->{store}->{param 'warehouse_id'},
 			};
 
 	}
@@ -463,7 +383,7 @@ post '/dcw' => sub {
 		}
 
 		#CHECK FREIGHT
-		my $check_freight = ($total_quantity * $freight_warehouse{param 'warehouse_id'} );
+		my $check_freight = ($total_quantity * config->{info}->{freight_warehouse}->{param 'warehouse_id'} );
 
 		#FREIGHT IN WORDS
 		my $words = spell_number($total_freight);
@@ -473,9 +393,9 @@ post '/dcw' => sub {
 				freight			=> $total_freight ,
 				freight_words	=> $words ,
 				end_date		=> $end_date,
-				month			=> $findmonth{$month},
+				month			=> config->{info}->{findmonth}->{$month},
 				year			=> $year,
-				branch			=> $store{param 'warehouse_id'},
+				branch			=> config->{info}->{store}->{param 'warehouse_id'},
 			};
 
 	}
@@ -533,9 +453,9 @@ post '/dcw' => sub {
 				discountarray => $array ,
 				totaldiscount => $total_discount ,
 				totalquantity => $total_quantity ,
-				branch	      => $store{param 'warehouse_id'} ,
+				branch	      => config->{info}->{store}->{param 'warehouse_id'} ,
 				year		  => $year ,
-				month		  => $findmonth{$month} ,
+				month		  => config->{info}->{findmonth}->{$month} ,
 			};
 
 	}
@@ -683,9 +603,9 @@ post '/dcw' => sub {
 				total_excise			=> $total_excise ,
 				total_insurance			=> $total_insurance ,
 				total_net_amount_2		=> $total_net_amount_2 ,
-				month					=> $findmonth{$month} ,
+				month					=> config->{info}->{info}->{findmonth}->{$month} ,
 				year					=> $year ,
-				address					=> $address{ (param 'warehouse_id' ) } ,
+				address					=> config->{info}->{address}->{ (param 'warehouse_id' ) } ,
 
 			};
 
@@ -717,9 +637,9 @@ post '/dcw' => sub {
 				tax			=> $total_sales_tax ,
 				tax_words	=> $words ,
 				end_date	=> $end_date,
-				month		=> $findmonth{$month},
+				month		=> config->{info}->{findmonth}->{$month},
 				year		=> $year,
-				branch		=> $store{param 'warehouse_id'},
+				branch		=> config->{info}->{store}->{param 'warehouse_id'},
 			};
 
 	}
@@ -798,7 +718,7 @@ post '/dcw' => sub {
 						af_rec_dt => { '<=' => $to_date_time , '>=' => $from_date_time} ,
 						accountcode	=> { '-IN'  => [qw/600001/] } ,
 						documentno	=> { -in => $doc_no } ,
-						branchcode	 => $branch{param 'warehouse_id'} ,
+						branchcode	 => config->{info}->{branch}->{param 'warehouse_id'} ,
 					},
 					{ result_class	=> 'DBIx::Class::ResultClass::HashRefInflator',}
 				);
@@ -865,10 +785,10 @@ post '/dcw' => sub {
 				array						=> $new_array ,
 				total_sale_quantity			=> $total_sale_quantity ,
 				total_purcahse_quantity		=> $total_purcahse_quantity ,
-				month						=> $findmonth{$month} ,
+				month						=> config->{info}->{findmonth}->{$month} ,
 				year						=> $year ,
 				end_date					=> $end_date,
-				branch						=> $store{param 'warehouse_id'},
+				branch						=> config->{info}->{store}->{param 'warehouse_id'},
 			};
 
 	}

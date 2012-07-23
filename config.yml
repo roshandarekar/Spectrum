@@ -36,3 +36,66 @@ plugins:
 #      dsn: 'dbi:ODBC:driver=microsoft access driver (*.mdb);dbq=./Spectrum.mdb'
       dsn: 'dbi:ADO:Provider=Microsoft.Jet.OLEDB.4.0;Data Source=./Spectrum.mdb'
       schema_class: Spectrum
+
+info:
+  vat_no:
+    100001: '27480022091V'
+    200001: '27480022091V'
+    300001: '24074501781V'
+    400001: '29310762698'
+    500001: '2500000243'
+  store:
+    100001: 'Mumbai'
+    200001: 'Jalgaon'
+    300001: 'Ahmedabad'
+    400001: 'Banglore'
+    500001: 'Daman'
+  cst_no:
+    100001: '27480022091C'
+    200001: '27480022091C'
+    300001: '24574501781C'
+    400001: '29310762698'
+    500001: 'DA/(CST)1753'
+  vat_date:
+    100001: '01/04/2006'
+    200001: '01/04/2006'
+    300001: '19/09/2005'
+    400001: ''
+    500001: '01/04/2005'
+  cst_date:
+    100001: '01/04/2006'
+    200001: '01/04/2006'
+    300001: '19/09/2005'
+    400001: ''
+    500001: ''
+  findmonth:
+    1: 'April'
+    2: 'May'
+    3: 'June'
+    4: 'July'
+    5: 'Aug'
+    6: 'Sep'
+    7: 'Oct'
+    8: 'Nov'
+    9: 'Dec'
+    10: 'Jan'
+    11: 'Feb'
+    12: 'March'
+  freight_warehouse:
+    100001: '2300'
+    200001: '2300'
+    300001: '2550'
+    400001: '1150'
+    500001: '2400'
+  address:
+    100001: 'M.K. Industries (Mumbai) <br> Gala No.13, Krishna Compound, <br> Near V. Trans, Bhiwandi <br> Dist. Thane <br> Maharashtra .'
+    200001: 'M.K. Industries (Jalgaon) <br> Gala No.116, Ajanta Raod, <br> Gat No.172/2, Kusumba, <br> Jalgaon <br> Maharashtra 425 003. <br> India '
+    300001: 'M.K. Industries (Ahmedabad) <br> Survey No.166 <br> Near Kalikund Naka - <br> Ahmedabad <br> Gujarat 380009 <br> India '
+    400001: 'M.K. Industries (Bangalore) Mbr> No.6, Ground Floor, Puttappa Indl. Estate <br> Deepanjali Nagar Mysore Road <br> Bangalore <br> . 560026. <br> India '
+    500001: 'M.K. Industries (Daman) <br> Gala No.4, <br> Mangal Smruti, 8 , Varkund Gam, <br> Daman <br> UT 396210. <br> India '
+  branch:
+    100001: 'MUM'
+    200001: 'MUM'
+    300001: 'AHD'
+    400001: 'BNG'
+    500001: 'DMN'
