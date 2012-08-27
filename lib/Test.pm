@@ -196,9 +196,10 @@ post '/dcw' => sub {
 
 		#QUERY TO ITEM BILL STOCK
 		my $rs = schema->resultset("FaItemBillStock")
+
 				->search({
 							documenttype => 'PUR' ,
-							branchcode	 => config->{info}->{branch}->{param 'warehouse_id'} ,
+							storecode	 => param 'warehouse_id' ,
 							documentdate => { '<=' => $to_date_time , '>=' => $new_date_time},
 							itemcode => { '-IN'  => [qw/3001 3060/] }
 					} ) ;
@@ -210,10 +211,11 @@ post '/dcw' => sub {
 		my $purchase = schema->resultset("FaPurchaseBillRegister")
 				->search(
 					{
-#						af_rec_dt => { '<=' => $to_date_time , '>=' => $from_date_time} ,
+						af_rec_dt => { '<=' => $to_date_time , '>=' => $from_date_time} ,
 						accountcode	=> { '-IN'  => [qw/600001/] } ,
 						documentno	=> { -in => $doc_no } ,
 						branchcode	 => config->{info}->{branch}->{param 'warehouse_id'} ,
+
 					},
 					{ result_class	=> 'DBIx::Class::ResultClass::HashRefInflator',}
 				);
