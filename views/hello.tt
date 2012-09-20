@@ -65,6 +65,13 @@
 							<option value="500001">Daman</option>
 						</select>
 					</p>
+					<p>
+						<label>Product Name</label><br>
+						<select name="product_id" class="required"  >
+							<option value="3001">PVC</option>
+							<option value="3060">Bottle Grade</option>
+						</select>
+					</p>
 				</div>
 				<div class="" >
 					<input type="submit" name="Submit" value="Submit">

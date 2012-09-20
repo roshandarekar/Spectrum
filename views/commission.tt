@@ -13,13 +13,13 @@ India<br>
 Dear Sir,
 <br>
 <br>
-We hereby certify that we have charged commission amount of Rs. <% commission %> (Rupees <% words %> only) on sale of PVC Resin supplied by you to us for consignment sale basis and that the same has been debited to your account by Sale Note No. <% month %>/<% year %>/M.K. Industries( <% branch %> ) dated <% end_date %>.
+We hereby certify that we have charged commission amount of Rs. <% commission %> (Rupees <% words %> only) on sale of PVC Resin supplied by you to us for consignment sale basis and that the same has been debited to your account by Sale Note No. <% month %><% If product_id == '3001' %>A<% Else %>B<% End %>/<% year %>/M.K. Industries( <% branch %> ) dated <% end_date %>.
 <br>
 <br>
-Further we certify that this commission is in full and final settlement against Sale Note no. <% month %>/<% year %>/M.K. Industries( <% branch %> ) dated <% end_date %>.
+Further we certify that this commission is in full and final settlement against Sale Note no. <% month %><% If product_id == '3001' %>A<% Else %>B<% End %>/<% year %>/M.K. Industries( <% branch %> ) dated <% end_date %>.
 <br>
 <br>
-Sale Note No.: <% month %>/<% year %>/M.K. Industries( <% branch %> ) Date <% end_date %>.
+Sale Note No.: <% month %><% If product_id == '3001' %>A<% Else %>B<% End %>/<% year %>/M.K. Industries( <% branch %> ) Date <% end_date %>.
 <br>
 <br>
 Commission amount: Rs. <% commission %> (Rupees <% words %> only)

@@ -74,3 +74,53 @@ Dear Sir,
 	For M.K. Industries<br><br><br><br><br>
 	Partner/Authorized Signatory
 </p>
+<% FOREACH note In credit_notes %>
+
+<p style="text-align:center">
+	CREDIT NOTE
+</p>
+<table cellpadding=10 border=1 class="report" style="text-align:left;">
+	<tr>
+		<td> Name of Customer: <% note.value.name %></td>
+		<td> Date: <% end_date %></td>
+	</tr>
+	<tr>
+		<td> Address : <% note.value.address %></td>
+		<td> </td>
+	</tr>
+	<tr>
+		<td> Particulars</td>
+		<td> Amount (Rs) </td>
+	</tr>
+	<tr>
+		<td> Being the amount is credited to your account towards quantity discount against invoice No.
+		<% FOREACH dir IN note.value.inv_no.split(',') %>
+			<% Unless loop.first %>
+				<% dir %> ,
+			<% End %>
+		<% END %>
+		for the month of <% month %><% Year %>.</td>
+		<td><% note.value.amount %></td>
+	</tr>
+	<tr>
+		<td>Total </td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Total In word : <% note.value.words Filter ucfirst %> only </td>
+		<td><% note.value.amount %>/- </td>
+	</tr>
+</table>
+<% FILTER html_line_break %>
+<p style="text-align:right">
+For M.K. Industries
+
+
+
+
+Partner/Authorized Signatory
+</p>
+<% END %>
+<p style="text-align:left">Checked By </p>
+<div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div> 
+<% End %>

@@ -1,4 +1,4 @@
-<div style="text-align:right;"><% month %>/<% year %>/M.K. Industries( <% branch %> )</div>
+<div style="text-align:right;"><% month %><% If product_id == '3001' %>A<% Else %>B<% End %>/<% year %>/M.K. Industries( <% branch %> )</div>
 <div style="text-align:right;"><% end_date %></div>
 
 <p style="text-align:left;">

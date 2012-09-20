@@ -13,10 +13,10 @@ India<br>
 Dear Sir,
 <br>
 <br>
-We hereby certify that we have retained a sum of Rs. <% godown_charges %>/- (Rupees <% godown_charges_words %> only) towards Godown Maintenance charges on sale of PVC Resin supplied by you to us for consignment sale basis at M. K. Industries (<% branch %>) and that the same has been debited to your account by Sale Note No. <% month %>/<% year %>/M.K. Industries( <% branch %> ) dated <% end_date %>.
+We hereby certify that we have retained a sum of Rs. <% godown_charges %>/- (Rupees <% godown_charges_words %> only) towards Godown Maintenance charges on sale of PVC Resin supplied by you to us for consignment sale basis at M. K. Industries (<% branch %>) and that the same has been debited to your account by Sale Note No. <% month %><% If product_id == '3001' %>A<% Else %>B<% End %>/<% year %>/M.K. Industries( <% branch %> ) dated <% end_date %>.
 <br>
 <br>
-Sale Note No.: <% month %>/<% year %>/M.K. Industries( <% branch %> ) Date <% end_date %>.
+Sale Note No.: <% month %><% If product_id == '3001' %>A<% Else %>B<% End %>/<% year %>/M.K. Industries( <% branch %> ) Date <% end_date %>.
 <br>
 <br>
 Godown Maintenance Charges : Rs. <% godown_charges %>/- (Rupees <% godown_charges_words %> only)

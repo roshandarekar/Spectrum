@@ -39,7 +39,7 @@ post '/dcw' => sub {
 							documenttype => 'INV' ,
 							storecode	 => (param 'warehouse_id'), 
 							documentdate => { '<=' => $to_date_time , '>=' => $from_date_time},
-							itemcode => { '-IN'  => [qw/3001 3060/] }
+							itemcode => (param ('product_id'))
 					} ) ;
 
 	#SELECT DOCUMENT NO AND RDOCUMENT NO
@@ -179,6 +179,7 @@ post '/dcw' => sub {
 				cst_no			=> config->{info}->{cst_no}->{param 'warehouse_id'} ,
 				vat_date		=> config->{info}->{vat_date}->{param 'warehouse_id'} ,
 				cst_date		=> config->{info}->{cst_date}->{param 'warehouse_id'} ,
+				product_id		=> param ('product_id') ,
 			};
 
 	}
@@ -196,12 +197,11 @@ post '/dcw' => sub {
 
 		#QUERY TO ITEM BILL STOCK
 		my $rs = schema->resultset("FaItemBillStock")
-
 				->search({
 							documenttype => 'PUR' ,
-							storecode	 => param 'warehouse_id' ,
-							documentdate => { '<=' => $to_date_time , '>=' => $new_date_time},
-							itemcode => { '-IN'  => [qw/3001 3060/] }
+							storecode	 => (param 'warehouse_id') ,
+							documentdate => { '<=' => $to_date_time , '>=' => $new_date_time} ,
+							itemcode => (param ('product_id'))
 					} ) ;
 
 		#SELECT DOCUMENT NO 
@@ -308,6 +308,7 @@ post '/dcw' => sub {
 				month		=> $month,
 				year		=> $year,
 				branch		=> config->{info}->{store}->{param 'warehouse_id'},
+				product_id		=> (param ('product_id'))
 			};
 
 	}
@@ -353,6 +354,7 @@ post '/dcw' => sub {
 				month					=> $month,
 				year					=> $year,
 				branch					=> config->{info}->{store}->{param 'warehouse_id'},
+				product_id				=> (param ('product_id'))
 			};
 
 	}
@@ -410,6 +412,7 @@ post '/dcw' => sub {
 		my $array = [];
 		my $total_quantity = 0;
 		my $total_discount = 0;
+		my $newhash = {};
 
 		foreach my $row ( $rs->all  ) {
 
@@ -438,12 +441,34 @@ post '/dcw' => sub {
 
 			#HASH OF BUYER NAME , SALE BILL NO , BILL DATE , QUANTITY AND DISCOUNT
 			my $hash = {
-				buyer		=> $buyer,
-				billno		=> $billno,
-				billdate	=> $bill_date,
-				quantity	=> $sale_quantity,
-				discount	=> $discount,
+				buyer			=> $buyer,
+				billno			=> $billno,
+				billdate		=> $bill_date,
+				quantity		=> $sale_quantity,
+				discount		=> $discount,
+				consignee_id	=> $row->partycode,
 			};
+				my %accountaddress	= map { $_->{accountcode} => $_ } $accountaddress->all;
+
+			if (!$newhash->{$row->partycode}->{address}) {
+				$newhash->{$row->partycode}->{address} = %accountaddress->{$row->partycode}->{address1} . " , " .
+														%accountaddress->{$row->partycode}->{address2} . " , " .
+														%accountaddress->{$row->partycode}->{address3} . " , " .
+														%accountaddress->{$row->partycode}->{city} . " , " .
+														%accountaddress->{$row->partycode}->{pin} . " , " .
+														%accountaddress->{$row->partycode}->{place} ;
+			}
+			if (!$newhash->{$row->partycode}->{amount}) {
+				$newhash->{$row->partycode}->{amount} = 0;
+			}
+			if (!$newhash->{$row->partycode}->{inv_no}) {
+				$newhash->{$row->partycode}->{inv_no} = [];
+			}
+
+			$newhash->{$row->partycode}->{amount} = $newhash->{$row->partycode}->{amount} + $discount;
+			$newhash->{$row->partycode}->{inv_no} = $newhash->{$row->partycode}->{inv_no} . "," . $billno . "," ;
+			$newhash->{$row->partycode}->{name} = $buyer;
+			$newhash->{$row->partycode}->{words} = spell_number($newhash->{$row->partycode}->{amount});
 
 			#ARRAY OF HASHES
 			push @$array , $hash;
@@ -452,13 +477,16 @@ post '/dcw' => sub {
 
 		template "discount.tt", 
 			{
-				discountarray => $array ,
-				totaldiscount => $total_discount ,
-				totalquantity => $total_quantity ,
-				branch	      => config->{info}->{store}->{param 'warehouse_id'} ,
-				year		  => $year ,
-				month		  => config->{info}->{findmonth}->{$month} ,
-			};
+				discountarray	=> $array ,
+				totaldiscount	=> $total_discount ,
+				totalquantity	=> $total_quantity ,
+				branch			=> config->{info}->{store}->{param 'warehouse_id'} ,
+				year			=> $year ,
+				month			=> config->{info}->{findmonth}->{$month} ,
+				credit_notes	=> $newhash,
+				end_date		=> $end_date,
+
+		};
 
 	}
 
