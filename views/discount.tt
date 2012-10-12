@@ -94,7 +94,7 @@ Dear Sir,
 		<td> Amount (Rs) </td>
 	</tr>
 	<tr>
-		<td> Being the amount is credited to your account towards quantity discount against invoice No.
+		<td> Being the amount is credited to your account towards discount against invoice No.
 		<% FOREACH dir IN note.value.inv_no.split(',') %>
 			<% Unless loop.first %>
 				<% dir %> ,

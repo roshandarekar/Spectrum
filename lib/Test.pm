@@ -3,7 +3,7 @@ use Dancer ':syntax';
 our $VERSION = '0.1';
 
 use Dancer::Plugin::DBIC qw/schema/;
-use DateTime::Format::DateManip;
+use Date::Manip;
 use Data::Dumper qw/Dumper/;
 use Spell;
 
@@ -17,22 +17,24 @@ post '/dcw' => sub {
 	schema->storage->dbh->{readonly};
 
 	#FROM AND TO DATE
-	my $from_date = DateTime::Format::DateManip->parse_datetime(param ('from_date'));
-	my $from_date_time = $from_date->strftime("%Y-%m-%d %H:%M:%S");
-	my $to_date = DateTime::Format::DateManip->parse_datetime(param ('to_date'));
-	my $to_date_time = $to_date->strftime("%Y-%m-%d %H:%M:%S");
-	my $end_date = $to_date->strftime("%d-%m-%Y");
-	my $start_date = $from_date->strftime("%d-%m-%Y");
-	my $month = $to_date->strftime('%m');
+	my $parse_date = new Date::Manip::Date;
+	my $from_date = (param ('from_date'));
+	$parse_date->parse($from_date);
+	my $from_date_time = $parse_date->printf('%Y-%m-%d %H:%M:%S');
+	my $start_date = $parse_date->printf("%d-%m-%Y");
+	my $to_date = (param ('to_date'));
+	$parse_date->parse($to_date);
+	my $to_date_time = $parse_date->printf('%Y-%m-%d %H:%M:%S');
+	my $end_date = $parse_date->printf("%d-%m-%Y");
+	my $month = $parse_date->printf('%m');
 	my $year;
 	if($month > 3){
 		$month -= 3;
-        $year = $to_date->strftime('%Y') . "-" . ($to_date->strftime('%Y') + 1);
+        $year = $parse_date->printf('%Y') . "-" . ($parse_date->printf('%Y') + 1);
 	} else {
 		$month += 9;
-        $year = ($to_date->strftime('%Y') - 1) . "-" . $to_date->strftime('%Y');
+        $year = ($parse_date->printf('%Y') - 1) . "-" . $parse_date->printf('%Y');
     }
-
 	#QUERY TO ITEM BILL STOCK
 	my $rs = schema->resultset("FaItemBillStock")
 				->search({
@@ -189,11 +191,12 @@ post '/dcw' => sub {
 	elsif ( (param 'report_type') eq 'goods_received' ){
 
 		#CREATING NEW DATE
-		my $new_month = $from_date->strftime('%m') - 1;
-		my $new_year = $from_date->strftime('%Y');
+		$parse_date->parse($from_date);
+		my $new_month = $parse_date->printf('%m') - 1;
+		my $new_year = $parse_date->printf('%Y');
 		my $new_date = $new_year . "-" . $new_month . "-25";
-		my $date = DateTime::Format::DateManip->parse_datetime($new_date);
-		my $new_date_time = $date->strftime("%Y-%m-%d %H:%M:%S");
+		$parse_date->parse($new_date);
+		my $new_date_time = $parse_date->printf("%Y-%m-%d %H:%M:%S");
 
 		#QUERY TO ITEM BILL STOCK
 		my $rs = schema->resultset("FaItemBillStock")
@@ -229,12 +232,12 @@ post '/dcw' => sub {
 			#PURCHASE BILL NO , BILL DATE , LR NO , RECIEVE DATE , QUANTITY AND TRANSPORTER
 			my $billno = $row->{'billno'};
 			my $billdate = $row->{'billdate'};
-			my $date = DateTime::Format::DateManip->parse_datetime($billdate);
-			my $bill_date = $date->strftime("%d-%m-%Y");
+			$parse_date->parse($billdate);
+			my $bill_date = $parse_date->printf("%d-%m-%Y");
 			my $lrno = $row->{'lrno'};
 			my $receiveddate = $row->{'af_rec_dt'};
-			my $date = DateTime::Format::DateManip->parse_datetime($receiveddate);
-			my $received_date = $date->strftime("%d-%m-%Y");
+			$parse_date->parse($receiveddate);
+			my $received_date = $parse_date->printf("%d-%m-%Y");
 
 			my $purchase_quantity = $row->{'totalquantity'};
 			my $transportername = $row->{'transportername'};
@@ -436,8 +439,8 @@ post '/dcw' => sub {
 			my $buyer = $accountname->{'accountname'};
 			my $billno = $row->documentno;
 			my $billdate = $row->documentdate;
-			my $date = DateTime::Format::DateManip->parse_datetime($billdate);
-			my $bill_date = $date->strftime("%d-%m-%Y");
+			$parse_date->parse($billdate);
+			my $bill_date = $parse_date->printf("%d-%m-%Y");
 
 			#HASH OF BUYER NAME , SALE BILL NO , BILL DATE , QUANTITY AND DISCOUNT
 			my $hash = {
@@ -581,13 +584,13 @@ post '/dcw' => sub {
 
 			#SALE DATE
 			my $saledate = $row->documentdate;
-			my $date = DateTime::Format::DateManip->parse_datetime($saledate);
-			my $sale_date = $date->strftime("%d-%m-%Y");
+			$parse_date->parse($saledate);
+			my $sale_date = $parse_date->printf("%d-%m-%Y");
 
 			#PURCHASE DATE
 			my $purchasedate = $row->billdate;
-			my $date = DateTime::Format::DateManip->parse_datetime($purchasedate);
-			my $purchase_date = $date->strftime("%d-%m-%Y");
+			$parse_date->parse($purchasedate);
+			my $purchase_date = $parse_date->printf("%d-%m-%Y");
 
 			#HASH OF INVOICE NO , INVOICE DATE , CUSTOMER NAME , INVOICE AMOUNT , FREIGHT , GODOWN CHARGES ,
 			#		 COMMISSION , TAX , DISCOUNT , NET AMOUNT , BILL NO , BILL DATE , LR NO , SALE QUANTITY ,
@@ -723,11 +726,12 @@ post '/dcw' => sub {
 #------------------------------- FOR PURCHASE -----------------------------------------
 
 		#CREATING NEW DATE
-		my $new_month = $from_date->strftime('%m') - 1;
-		my $new_year = $from_date->strftime('%Y');
+		$parse_date->parse($from_date);
+		my $new_month = $parse_date->printf('%m') - 1;
+		my $new_year = $parse_date->printf('%Y');
 		my $new_date = $new_year . "-" . $new_month . "-25";
-		my $date = DateTime::Format::DateManip->parse_datetime($new_date);
-		my $new_date_time = $date->strftime("%Y-%m-%d %H:%M:%S");
+		$parse_date->parse($new_date);
+		my $new_date_time = $parse_date->printf("%Y-%m-%d %H:%M:%S");
 
 		#QUERY TO ITEM BILL STOCK
 		my $rs = schema->resultset("FaItemBillStock")
