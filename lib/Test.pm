@@ -232,12 +232,20 @@ post '/dcw' => sub {
 			#PURCHASE BILL NO , BILL DATE , LR NO , RECIEVE DATE , QUANTITY AND TRANSPORTER
 			my $billno = $row->{'billno'};
 			my $billdate = $row->{'billdate'};
-			$parse_date->parse($billdate);
-			my $bill_date = $parse_date->printf("%d-%m-%Y");
+			my $is_valid_date = $parse_date->is_date($billdate);
+			my $bill_date = $billdate;
+			if($is_valid_date){
+				$parse_date->parse($billdate);
+				$bill_date = $parse_date->printf("%d-%m-%Y");
+			}
 			my $lrno = $row->{'lrno'};
 			my $receiveddate = $row->{'af_rec_dt'};
-			$parse_date->parse($receiveddate);
-			my $received_date = $parse_date->printf("%d-%m-%Y");
+			my $received_date = $receiveddate;			
+			my $is_valid_date = $parse_date->is_date($receiveddate);
+			if($is_valid_date){
+				$parse_date->parse($receiveddate);
+				$received_date = $parse_date->printf("%d-%m-%Y");
+			}
 
 			my $purchase_quantity = $row->{'totalquantity'};
 			my $transportername = $row->{'transportername'};
@@ -439,8 +447,12 @@ post '/dcw' => sub {
 			my $buyer = $accountname->{'accountname'};
 			my $billno = $row->documentno;
 			my $billdate = $row->documentdate;
-			$parse_date->parse($billdate);
-			my $bill_date = $parse_date->printf("%d-%m-%Y");
+			my $bill_date = $billdate;
+			my $is_valid_date = $parse_date->is_date($billdate);
+			if($is_valid_date){
+				$parse_date->parse($billdate);
+				$bill_date = $parse_date->printf("%d-%m-%Y");
+			}
 
 			#HASH OF BUYER NAME , SALE BILL NO , BILL DATE , QUANTITY AND DISCOUNT
 			my $hash = {
@@ -584,13 +596,21 @@ post '/dcw' => sub {
 
 			#SALE DATE
 			my $saledate = $row->documentdate;
-			$parse_date->parse($saledate);
-			my $sale_date = $parse_date->printf("%d-%m-%Y");
-
+			my $sale_date = $saledate;			
+			my $is_valid_date = $parse_date->is_date($saledate);
+			if($is_valid_date){
+				$parse_date->parse($saledate);
+				$sale_date = $parse_date->printf("%d-%m-%Y");
+			}
+			
 			#PURCHASE DATE
 			my $purchasedate = $row->billdate;
-			$parse_date->parse($purchasedate);
-			my $purchase_date = $parse_date->printf("%d-%m-%Y");
+			my $purchase_date = $purchasedate;			
+			my $is_valid_date = $parse_date->is_date($purchasedate);
+			if($is_valid_date){
+				$parse_date->parse($purchasedate);
+				$purchase_date = $parse_date->printf("%d-%m-%Y");
+			}
 
 			#HASH OF INVOICE NO , INVOICE DATE , CUSTOMER NAME , INVOICE AMOUNT , FREIGHT , GODOWN CHARGES ,
 			#		 COMMISSION , TAX , DISCOUNT , NET AMOUNT , BILL NO , BILL DATE , LR NO , SALE QUANTITY ,

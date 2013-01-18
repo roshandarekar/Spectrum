@@ -34,10 +34,12 @@
 					<p>
 						<label>From Date: </label>
 						<input type="text" class="datepicker calc" name="from_date" value=""/>
+						<span>Format 2013-01-01</span>
 					</p>
 					<p>
 						<label>To Date: </label>
 						<input type="text" class="datepicker calc" name="to_date" value=""/>
+						<span>Format 2013-01-31</span>
 					</p>
 				</div>
 				<div style="width:200px" >
