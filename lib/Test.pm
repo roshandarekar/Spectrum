@@ -194,6 +194,10 @@ post '/dcw' => sub {
 		$parse_date->parse($from_date);
 		my $new_month = $parse_date->printf('%m') - 1;
 		my $new_year = $parse_date->printf('%Y');
+		if ($new_month eq 0){
+			$new_month = 12;
+			$new_year = $new_year - 1;				
+		}
 		my $new_date = $new_year . "-" . $new_month . "-25";
 		$parse_date->parse($new_date);
 		my $new_date_time = $parse_date->printf("%Y-%m-%d %H:%M:%S");
